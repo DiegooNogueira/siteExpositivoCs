@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Exercício 4</title>
+	<style>
+		#personagem{
+			display: none;
+			float-left;
+			position: absolute;
+			margin-top:20px;
+		}
+		#personagem > div > figure{
+			width: 310px;
+			float:left;
+		}
+		#personagem > div > figure > img{
+			width: 300px;
+			height: 300px;
+		}
+		#personagem > div > figure > img:hover{
+			border: solid blue 5px;
+			width: 290px;
+			height: 290px;
+		}
+		.selecionado{
+			border: solid red 5px;
+			width: 305px;
+			height: 305px;
+		}
+
+		.selecionado + figcaption{
+			text-align: center;
+			font-size: 35px;
+		}
+		figcaption{
+			font-size: 25px;
+		}
+		#batalha{
+			display: none;
+		}
+		#batalha > div > img{
+			width: 250px;
+			height: 250px;
+		}
+		#final{
+			display: none;
+		}
+		#final > img{
+			width: 300px;
+			height: 300px;
+		}
+	</style>
+	<script>
+		var personagem = 'imagens/jim.jpg';
+		var adv2;
+		var vencedor;
+
+		function jogar(){
+			document.getElementById('personagem').style.display = 'block';
+		}
+		function escolher(id, imagem){
+			document.getElementById('p1').src = 'imagens/jim1.jpg';
+			document.getElementById('p1').className = "";
+			document.getElementById('p2').src = 'imagens/pablo1.jpg'; 
+			document.getElementById('p2').className = "";
+			document.getElementById('p3').src = 'imagens/faustao1.jpg';
+			document.getElementById('p3').className = "";
+
+			document.getElementById(id).src = 'imagens/'+imagem;
+
+			document.getElementById(id).className = "selecionado";
+
+			personagem = 'imagens/'+imagem;
+		}
+		function figth(){
+			adv2;
+			document.getElementById('personagem').style.display = 'none'; 
+			document.getElementById('batalha').style.display = 'block';
+			var vencedor;
+
+			do{
+				adv2 = 'imagens/';
+
+				var sorteio = Math.floor(Math.random() * 3);
+
+				switch(sorteio){
+					case 0:
+						adv2 += 'jim2.jpg';
+					break;
+					case 1:
+						adv2 +='pablo2.jpg';
+					break;
+					case 2:
+						adv2 +='faustao2.jpg';
+					break;
+				}
+			}while(personagem == adv2);
+
+			document.getElementById('adv1').src = personagem;
+			document.getElementById('adv2').src = adv2;
+			document.getElementById('mao_esq').src = 'imagens/interrogacao.png';
+			document.getElementById('mao_dir').src = 'imagens/interrogacao.png';
+		}
+		function batalhar(){
+			var escolha = document.getElementById('mao').value;
+			var mao_adv = Math.floor(Math.random()*3);
+
+			switch(mao_adv){
+				case 0:
+					document.getElementById('mao_dir').src = 'imagens/pedra_dir.png';
+				break;
+				case 1:
+					document.getElementById('mao_dir').src = 'imagens/papel_dir.png';
+				break;
+				case 2:
+					document.getElementById('mao_dir').src = 'imagens/tesoura_dir.png';
+				break;
+			}
+
+			if(escolha == "pedra"){
+				document.getElementById('mao_esq').src = 'imagens/pedra_esq.png';
+			}else if(escolha == "papel"){
+				document.getElementById('mao_esq').src = 'imagens/papel_esq.png';
+			}else{
+				document.getElementById('mao_esq').src = 'imagens/tesoura_esq.png'
+			}
+			if((mao_adv == 0 && escolha == "papel") || (mao_adv == 1 && escolha =="tesoura") || (mao_adv == 2 && escolha =="pedra")){
+				if(personagem == "imagens/jim2.jpg"){
+					vencedor = "Jim Carrey";
+					personagem = "imagens/jim_wins.gif";
+				}else if(personagem == "imagens/pablo2.jpg"){
+					vencedor = "Pablo Vittar";
+					personagem = "imagens/pablo_wins.gif";
+				}else{
+					vencedor = "Faustão";
+					personagem = "imagens/faustao_wins.gif";
+				}
+
+				setTimeout(
+					function(){
+						document.getElementById('personagem').style.display = 'none';
+						document.getElementById('batalha').style.display = 'none';
+						document.getElementById('final').style.display = 'block';
+						document.getElementById('msg_final').innerHTML = vencedor + " wins!";
+						document.getElementById('winner').src = personagem;
+					},
+					2000
+				);
+			}else if((mao_adv == 2 && escolha == "papel") || (mao_adv == 0 && escolha =="tesoura") || (mao_adv == 1 && escolha =="pedra")){
+				if(adv2 == "imagens/jim2.jpg"){
+					vencedor = "Jim Carrey";
+					adv2 = "imagens/jim_wins.gif";
+				}else if(adv2 == "imagens/pablo2.jpg"){
+					vencedor = "Pablo Vittar";
+					adv2 = "imagens/pablo_wins.gif";
+				}else{
+					vencedor = "Faustão";
+					adv2 = "imagens/faustao_wins.gif";
+				}
+
+				setTimeout(
+					function(){
+						document.getElementById('personagem').style.display = 'none';
+						document.getElementById('batalha').style.display = 'none';
+						document.getElementById('final').style.display = 'block'
+						document.getElementById('msg_final').innerHTML = vencedor + " wins!";
+						document.getElementById(' winner').src = adv2;
+					},
+					2000
+				);
+		}
+	}
+	</script>
+</head>
+<body>
+<h1>Jokenpo</h1>
+<button type="button" onclick="jogar()">Vamos Jogar!!!</button>
+<div id="personagem">
+	<h2>Escolha seu personagem</h2>
+	<div style="float: left;">
+		<figure>
+			<img src="imagens/jim1.jpg" onclick="escolher('p1', 'jim2.jpg')" id="p1">
+			<figcaption>Jim Carrey</figcaption>
+		</figure>
+		<figure>
+			<img src="imagens/pablo1.jpg" onclick="escolher('p2', 'pablo2.jpg')" id="p2">
+			<figcaption>Pablo Vittar</figcaption>
+		</figure>
+		<figure>
+			<img src="imagens/faustao1.jpg" onclick="escolher('p3', 'faustao2.jpg')" id="p3">
+			<figcaption>Faustão</figcaption>
+		</figure>
+	</div>
+	<div style="float:none;">
+		<button type="button" onclick="figth()">
+			Jogar!!!
+		</button>
+	</div>
+</div>
+<div id="batalha">
+	<div>
+		<img src="" id="adv1">
+		<img src="imagens/versus.jpg">
+		<img src="" id="adv2">
+	</div>
+	<div>
+		<img src="imagens/interrogacao.png" id="mao_esq">
+		<img src="imagens/arbitrol.jpg" id="arbitro">
+		<img src="imagens/interrogacao.png" id="mao_dir">
+	</div>
+	<div>
+		<select id="mao">
+			<option value="pedra">PEDRA</option>
+			<option value="papel">PAPEL</option>
+			<option value="tesoura">TESOURA</option>
+		</select>
+		<button type="button" onclick="batalhar()">
+			VAI!!!
+		</button>
+	</div>
+</div>
+<div id="final">
+	<h1 id="msg_final"> </h1>
+	<img src="imagens/arbitro_final.jpg">
+	<img src="" id="winner">
+</div>
+</body>
+</html>
